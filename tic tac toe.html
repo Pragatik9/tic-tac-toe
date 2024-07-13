@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 5px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .cell {
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      border: 1px solid #000;
+      cursor: pointer;
+    }
+    button {
+      font-size: 1em;
+      padding: 10px 20px;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Tic Tac Toe</h2>
+
+<div id="board">
+  <div class="cell" onclick="makeMove(this, 0)"></div>
+  <div class="cell" onclick="makeMove(this, 1)"></div>
+  <div class="cell" onclick="makeMove(this, 2)"></div>
+  <div class="cell" onclick="makeMove(this, 3)"></div>
+  <div class="cell" onclick="makeMove(this, 4)"></div>
+  <div class="cell" onclick="makeMove(this, 5)"></div>
+  <div class="cell" onclick="makeMove(this, 6)"></div>
+  <div class="cell" onclick="makeMove(this, 7)"></div>
+  <div class="cell" onclick="makeMove(this, 8)"></div>
+</div>
+
+<button onclick="resetGame()">Reset</button>
+
+<script>
+  let board = ["", "", "", "", "", "", "", "", ""];
+  let currentPlayer = "X";
+  let gameActive = true;
+
+  const winningConditions = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+    [0, 4, 8], [2, 4, 6]             // Diagonals
+  ];
+
+  function makeMove(cell, index) {
+    if (board[index] === "" && gameActive) {
+      board[index] = currentPlayer;
+      cell.innerText = currentPlayer;
+      checkResult();
+      currentPlayer = currentPlayer === "X" ? "O" : "X";
+    }
+  }
+
+  function checkResult() {
+    let roundWon = false;
+    for (let i = 0; i < winningConditions.length; i++) {
+      const [a, b, c] = winningConditions[i];
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        roundWon = true;
+        break;
+      }
+    }
+
+    if (roundWon) {
+      alert(currentPlayer + " wins!");
+      gameActive = false;
+    } else if (!board.includes("")) {
+      alert("It's a draw!");
+      gameActive = false;
+    }
+  }
+
+  function resetGame() {
+    board = ["", "", "", "", "", "", "", "", ""];
+    currentPlayer = "X";
+    gameActive = true;
+    document.querySelectorAll('.cell').forEach(cell => cell.innerText = "");
+  }
+</script>
+
+</body>
+</html>
